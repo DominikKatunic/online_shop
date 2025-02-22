@@ -1,0 +1,13 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <div>
+        <h2>How are you paying</h2>
+        <div>
+            <a href="{{ url_for('check_order', order_data=full_data) }}"><button class="btn btn-primary">By delivery</button></a>
+            <a href="#"><button class="btn btn-info">Online payment (card)</button></a>
+        </div>
+    </div>
+</body>
+
+{% include "footer.html" %}

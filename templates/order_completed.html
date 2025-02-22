@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Complete</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .circle {
+            width: 150px;
+            height: 150px;
+            background-color: lightgreen;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .checkmark {
+            width: 60px;
+            height: 30px;
+            border-bottom: 8px solid white;
+            border-left: 8px solid white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            transform-origin: center;
+            animation: draw 0.5s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes draw {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            50% {
+                width: 20px;
+                height: 30px;
+                opacity: 1;
+            }
+            100% {
+                width: 60px;
+                height: 30px;
+                opacity: 1;
+            }
+        }
+
+        .text {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .subtext {
+            font-size: 14px;
+            color: gray;
+        }
+
+        .home-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: lightblue;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .home-button:hover {
+            background-color: deepskyblue;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="circle">
+        <div class="checkmark"></div>
+    </div>
+
+    <div class="text">All done</div>
+    <div class="subtext">Order has successfully been completed</div>
+
+    <a href="{{ url_for('home') }}"><button class="home-button">Home page</button></a>
+
+</body>
+</html>
+

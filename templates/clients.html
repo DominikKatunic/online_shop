@@ -1,0 +1,50 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <br> <br>
+    <div class="row justify-content-between">
+        <div class="col-md-5">
+            <input type="text" class="form-control" placeholder="Search clients by name" oninput="search(this.value)">
+        </div>
+    </div>
+
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">Users name</th>
+              <th scope="col">Users email</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for user in users %}
+                <tr class="client-row">
+                    <td class="client-name">{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><a href="{{ url_for('send_message_to_client', id_user=user.id) }}"><button class="btn btn-warning">Send message</button></a></td>
+                    <td><a href="{{ url_for('clients_orders', id_user=user.id) }}"><button class="btn btn-success">Check orders</button></a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function search(value) {
+            let allUsers = document.querySelectorAll(".client-row");
+            value = value.toLowerCase();
+
+            allUsers.forEach(row => {
+                let userName = row.querySelector(".client-name").textContent.toLowerCase();
+
+                if (userName.includes(value)) {
+                    row.style.display = "table-row";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+
+

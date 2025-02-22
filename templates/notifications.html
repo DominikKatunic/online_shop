@@ -1,0 +1,29 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <div class="container mt-5">
+        <h2 class="mb-4">Your Notifications</h2>
+
+        {% if data %}
+            <div class="list-group">
+                {% for note in data %}
+                    <div class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ note.title }}</h5>
+                            <small class="text-muted">{{ note.date.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <p class="mb-1">{{ note.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="alert">
+                You have no notifications at the moment.
+            </div>
+        {% endif %}
+    </div>
+    <br> <br>
+</body>
+
+{% include "footer.html" %}
+

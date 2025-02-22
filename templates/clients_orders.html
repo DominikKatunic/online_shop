@@ -1,0 +1,28 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <br> <br>
+    <table class="table">
+        <thead>
+            <tr>
+              <th scope="col">Order id</th>
+              <th scope="col">Date</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for order in all_orders %}
+                <tr class="client-row">
+                    <td>{{ order.id_order }}</td>
+                    <td>{{ order.date }}</td>
+                    <td><a href="{{ url_for('clients_order_detail', id_order=order.id_order) }}"><button class="btn btn-success">Check order</button></a></td>
+                    {% if order.status == 0 %}
+                        <td><a href="{{ url_for('complete_clients_order', order_id=order.id_order) }}"><button class="btn btn-warning">Complete order</button></a></td>
+                    {% else %}
+                        <td>Order completed</td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+

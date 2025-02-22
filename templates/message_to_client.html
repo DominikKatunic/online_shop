@@ -1,0 +1,39 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  <div class="alert alert-danger">
+                    {% for message in messages %}
+                      <p>{{ message }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Message for</h2>
+                <form method="POST" action="{{ url_for('send_message_to_client', id_user=user.id) }}">
+                    {{ form.hidden_tag() }}
+            
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.title.label }}</label>
+                        {{ form.title(class="form-control", placeholder="Title") }}
+                    </div>
+            
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.message.label }}</label>
+                        {{ form.message(class="form-control") }}
+                    </div>
+            
+                    <div class="text-center">
+                        {{ form.submit(class="btn btn-success") }}
+                    </div>
+            
+                </form>
+            </div>
+        </div>
+    </div>
+</body>

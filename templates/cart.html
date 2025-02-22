@@ -1,0 +1,121 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <h2>Your cart</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="alert alert-danger">
+            {% for message in messages %}
+              <p>{{ message }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+    {% endwith %}
+
+    <div id="cart-items">
+        {% for article in data['articles'] %}
+            <div class="cart-item" data-price="{{ article.price }}" style="display: flex; align-items: center; justify-content: space-between; border: 1px solid #000; border-radius: 10px; padding: 15px; margin: 15px;">
+
+                <div style="flex: 1;">
+                    <a href="{{ url_for('add_to_cart', id_article=article.id) }}"><img src="{{ article.img_url }}" alt="Slika proizvoda" style="width: 150px; height: auto; border-radius: 10px;"></a>
+                </div>
+
+                <div style="flex: 2; padding-left: 20px;">
+                    <h3 class="article_name">{{ article.name }}</h3>
+                    <p>Price: <span class="item-price">{{ article.price }}</span>$</p>
+                    
+                    <label for="quantity-{{ article.id }}">Number of articles:</label>
+                    <input type="number" class="quantity-input" id="quantity-{{ article.id }}" name="quantity" min="1" value="1" style="width: 50px; margin-left: 10px;">
+                    
+                    <p>Rating: ⭐ {{ article.rating }}</p>
+                </div>
+
+                <div style="visibility: hidden;" class="article_id_hidden">{{article.id}}</div>
+
+                <div>
+                    <a href="{{ url_for('delete_from_cart', id_article=article.id) }}"><button style="background-color: #f8d7da; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer;">Delete</button></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <p style="text-align: left; font-weight: bold; margin-top: 20px;">Total: <span id="total-price">0</span>$</p>
+    <form action="{{ url_for('client_form') }}" method="POST" onsubmit="updateHiddenInput()">
+        <input type="hidden" id="data" name="data" value=""> 
+        <button style="display: block; margin: 0 auto; padding: 10px 20px; background-color: #cce5ff; border: none; border-radius: 5px; cursor: pointer;" type="submit">
+            Go to payment
+        </button>
+    </form>
+
+    <br> <br>
+
+    <script>
+        function get_articles() {
+            let total_price = document.getElementById('total-price').textContent;
+            let articles = [];
+    
+            document.querySelectorAll('.cart-item').forEach(item => {
+                let articleId = item.querySelector(".article_id_hidden").textContent.trim();
+                let name = item.querySelector(".article_name").textContent.trim();
+                let price = parseFloat(item.getAttribute('data-price'));
+                let quantity = parseInt(item.querySelector('.quantity-input').value);
+    
+                if (!isNaN(price) && !isNaN(quantity)) {
+                    articles.push({
+                        "id": articleId,
+                        "article_name": name,
+                        "price": price,
+                        "quantity": quantity
+                    });
+                }
+            });
+    
+            return {
+                "total_price": total_price,
+                "articles": articles
+            };
+        }
+    
+        function updateHiddenInput() {
+            let cartData = get_articles();
+            document.getElementById('data').value = JSON.stringify(cartData);
+        }
+    
+        function updateTotal() {
+            let total = 0;
+    
+            document.querySelectorAll('.cart-item').forEach(item => {
+                let priceText = item.getAttribute('data-price');
+                let price = parseFloat(priceText);
+    
+                if (isNaN(price)) {
+                    console.error("Greška: Cijena nije broj!", priceText);
+                    return;
+                }
+    
+                let quantityInput = item.querySelector('.quantity-input');
+                let quantity = parseInt(quantityInput.value);
+    
+                if (isNaN(quantity)) {
+                    console.error("Greška: Količina nije broj!", quantityInput.value);
+                    return;
+                }
+    
+                total += price * quantity;
+            });
+    
+            document.getElementById('total-price').textContent = total.toFixed(2);
+            updateHiddenInput();
+        }
+    
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', updateTotal);
+        });
+    
+        updateTotal();
+    </script>
+</body>
+
+{% include "footer.html" %}
+

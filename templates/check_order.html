@@ -1,0 +1,53 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <div>
+        <h2>Check order</h2>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col">Name of an article</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price of an article</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for article in data['article_data']['articles'] %}
+                        <tr>
+                            <td>{{article['article_name']}}</td>
+                            <td>{{article['quantity']}}</td>
+                            <td>{{article['price']}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p>Tottal: ${{data['article_data']['total_price']}}</p>
+        <div>
+            <a href="{{ url_for('make_order', full_data=sending_data) }}"><button class="btn btn-info" id="confirm_button">Confirm order</button></a>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector("#confirm_button").addEventListener("click", (event) => {
+            event.preventDefault();
+    
+            Notification.requestPermission().then(perm => {
+                if (perm === "granted") {
+                    new Notification("Order Confirmed", {
+                        body: "Your order has been successfully placed!",
+                        icon: "https://cdn-icons-png.flaticon.com/512/3917/3917754.png"
+                    });
+                    setTimeout(() => {
+                        window.location.href = event.target.closest("a").href;
+                    }, 2000);
+                } else {
+                    window.location.href = event.target.closest("a").href;
+                }
+            });
+        });
+    </script>
+</body>
+
+{% include "footer.html" %}

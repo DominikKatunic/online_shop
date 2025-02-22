@@ -1,0 +1,39 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <h2>My orders</h2>
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">Order ID</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Address</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for order in full_data['orders'] %}
+                    <tr>
+                        <td>{{order['id']}}</td>
+                        <td>{{order['date']}}</td>
+                        <td>{{order['address']}}</td>
+                        <td>${{order['total']}}</td>
+                        <td>
+                            {% if order['status'] %}
+                                Order completed
+                            {% else %}
+                                Waiting for order
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ url_for('order_details', data=order['articles']) }}"><button class="btn btn-success">Details</button></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+{% include "footer.html" %}

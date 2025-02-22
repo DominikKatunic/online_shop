@@ -1,0 +1,29 @@
+{% include "header.html" %}
+
+<body class="d-flex flex-column min-vh-100">
+    <h2>My orders</h2>
+
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                  <th scope="col">Name of article</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                {% for article in data['articles'] %}
+                    <tr>
+                        <td>{{ article['name'] }}</td>
+                        <td>{{ article['quantity'] }}</td>
+                        <td>${{ article['price'] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Total: ${{ data['total'] }}</p>
+    </div>
+</body>
+
+
